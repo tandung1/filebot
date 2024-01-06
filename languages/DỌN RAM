@@ -1,0 +1,8 @@
+rm -fr modules/commands/cache/*.m4a 
+rm -fr modules/commands/cache/*.mp4 
+rm -fr modules/commands/cache/*.png 
+rm -fr modules/commands/cache/*.jpg 
+rm -fr modules/commands/cache/*.gif 
+rm -fr modules/commands/cache/*.mp3
+
+rm -fr modules/*.js 

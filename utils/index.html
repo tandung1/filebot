@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+        <style>
+            html, body {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+              background: url('https://i.pinimg.com/564x/3b/38/36/3b383603739691ef29e5e353aec24d9d.jpg') no-repeat center center fixed;
+              -webkit-background-size: cover;
+              -moz-background-size: cover;
+              -o-background-size: cover;
+              background-size: cover;
+              cursor: auto; 
+            }
+
+            .content {
+              position: relative;
+              text-align: center; 
+              background: rgba(255, 255, 255, 0.8);
+              padding: 50px;
+              border-radius: 15px;
+              box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+              margin: 20px;
+            }
+
+            .icon, .detail {
+              display: inline-block;
+              vertical-align: middle;
+            }
+
+            img {
+              width: 200px;
+              height: 200px;
+              object-fit: cover;
+              border-radius: 50%;
+              border: 3px solid blue; 
+              position: relative;
+              z-index: 2;
+              transition: transform 0.4s;
+            }
+            img:hover {
+              transform: scale(1.2);  
+            }
+
+            img:after { 
+              content: "";
+              position: absolute;
+              width: 10px;
+              height: 10px;
+              border-radius: 50%;
+              background-color: limegreen;
+              bottom: 10px;
+              right: 10px;
+            }
+          a:hover {
+            cursor: url("https://i.pinimg.com/564x/0c/87/68/0c87685c2b59dda035b73993390036df.jpg"),auto;
+          }
+          h1 {
+            font-size: 2em;
+            transition: transform 0.4s;  
+          }
+
+          h1:hover {
+            transform: scale(1.5);  
+          }
+
+          p {
+            transition: transform 0.3s;  
+          }
+
+          p:hover {
+            transform: scale(1.5);  
+          }
+            @keyframes fall {
+              0% { transform: translateY(-5vh); } /* Bắt đầu ngoài màn hình */
+              100% { transform: translateY(100vh); } /* Kết thúc ở dưới màn hình */
+            }
+
+            .dot {
+              position: fixed;
+              width: 5px; /* Kích thước chấm */
+              height: 5px; /* Kích thước chấm */
+              background-color: white; /* Màu sắc chấm */
+              border-radius: 50%; /* Làm tròn để tạo hình chấm */
+              opacity: 0.6; /* Độ trong suốt của chấm */
+              animation: fall linear infinite; /* Áp dụng hiệu ứng rơi liên tục */
+              animation-duration: var(--animation-duration, 3s); /* Điều chỉnh thời gian rơi */
+            }
+            @keyframes blinkColors {
+              0% { color: red; }
+              14% { color: orange; }
+              28% { color: yellow; }
+              42% { color: green; }
+              57% { color: blue; }
+              71% { color: indigo; }
+              85% { color: violet; }
+              100% { color: red; }
+            }
+
+            @keyframes slideInFromLeft {
+              0% {
+                transform: translateX(-100%); /* Start fully outside the screen on the left */
+              }
+              100% {
+                transform: translateX(100vw); /* End fully outside the screen on the right */
+              }
+            }
+
+            .happy-text {
+              position: fixed;
+              top: 0;
+              left: 0; /* Start from the top left corner of the screen */
+              transform: translateX(0%); /* No initial horizontal transform */
+              white-space: nowrap; /* Keep text in a single line */
+              animation: slideInFromLeft 10s linear infinite, /* Slide animation */
+                         blinkColors 2s linear infinite; /* Color blink animation */
+              font-size: 48px; /* Adjust the size as needed */
+            }
+
+            .happy-text {
+              position: fixed;
+              top: 0;
+              left: 0;
+              white-space: nowrap; /* Keep text in a single line */
+              animation: slideInFromLeft 10s linear infinite, /* Slide animation */
+                         blinkColors 2s linear infinite; /* Color blink animation */
+            }
+            .happy-text {
+              /* ... existing properties ... */
+              font-size: 30px; /* Adjust the size as needed */
+              /* ... other existing properties ... */
+            }
+        </style>
+        
+
+        </head>
+
+
+      <body>
+        <div class="happy-text">Welcome to profile by vtuan</div>
+        <div class="content">
+          <div class="square-gif"></div>
+          <img src="https://i.pinimg.com/564x/0c/87/68/0c87685c2b59dda035b73993390036df.jpg" alt="Profile picture">
+          <h1>Vũ Văn Tuấn</h1>
+          <div class='box'>
+            <div class='row'>
+               <div class='col-2'>
+                  <div class='icon'><i class='fab fa-facebook'></i></div>
+                  <a href="https://www.facebook.com/tddzs1tg06" target="_blank">Facebook Của Mình</a>
+               </div>
+            </div>
+          </div>
+          <p>Công việc: <span>Là Học Sinh</span></p>
+          <p>Nơi ở:  <span> Hải    Dương</span></p>
+          <p>Time onl: <span id="uptime"></span></p>
+           <p><a href="https://webapi.chaocacbannhe.repl.co/" id="webapi-link">Web Api</a></p>
+          <p id="ip-address">Loading IP...</p>
+          <!-- Nút bật/tắt nhạc -->
+          <button id="btnToggleMusic">🔊 Bật Nhạc</button>
+          <!-- Thẻ audio để phát nhạc nền -->
+          <audio id="myMusic" loop>
+            <!-- Nguồn nhạc sẽ được đặt vào đây bằng JavaScript -->
+            Your browser does not support the audio element.
+          </audio>
+
+
+          
+          <script>
+            window.onload = async function() {
+              let response = await fetch('https://api64.ipify.org?format=json');
+              let ipObject = await response.json();
+              document.getElementById('ip-address').textContent = `IP Của Bạn: ${ipObject.ip}`;
+            };
+            document.getElementById('webapi-link').addEventListener('click', function(event) {
+              event.preventDefault();
+              navigator.clipboard.writeText(event.target.href).then(function() {
+                alert('Đã coppy thành công');
+              }).catch(function(error) {
+                alert('Thất bại khi coppy link');
+              });
+            });
+            let pageLoadTime = localStorage.getItem('pageLoadTime');
+
+            if (pageLoadTime === null) {
+              pageLoadTime = new Date().getTime();
+              localStorage.setItem('pageLoadTime', pageLoadTime);
+            }
+            setInterval(() => {
+              const uptimeElement = document.getElementById("uptime");
+              const uptime = Math.floor((new Date().getTime() - pageLoadTime) / 1000);
+              const hours = Math.floor(uptime / 3600);
+              const remainingSeconds = uptime % 3600;
+              const minutes = Math.floor(remainingSeconds / 60);
+              const seconds = remainingSeconds % 60;
+              uptimeElement.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+            function createDot() {
+              const dot = document.createElement('div');
+              dot.classList.add('dot');
+              // Đặt thời gian trễ và thời gian rơi ngẫu nhiên cho mỗi chấm
+              dot.style.animationDelay = `${Math.random() * 5}s`; // Thời gian bắt đầu ngẫu nhiên
+              dot.style.animationDuration = `${3 + Math.random() * 5}s`; // Thời gian rơi ngẫu nhiên từ 3 đến 8 giây
+              dot.style.left = `${Math.random() * 100}vw`; // Vị trí ngẫu nhiên trên trục ngang trang
+              dot.style.top = `${-10 + Math.random() * 5}vh`; // Vị trí ngẫu nhiên trên trục dọc, ngoài màn hình trên
+              document.body.appendChild(dot); // Thêm chấm vào body của trang
+            }
+
+            // Tạo ra nhiều chấm
+            for (let i = 0; i < 100; i++) {
+              createDot();
+            }
+
+const musicLinks = ["https://files.catbox.moe/3skxyi.mp3",
+  "https://files.catbox.moe/va1e7a.mp3",
+  "https://files.catbox.moe/jyjz8v.mp3",
+  "https://files.catbox.moe/pojb4p.mp3",
+  "https://files.catbox.moe/42gp36.mp3",
+  "https://files.catbox.moe/07aps5.mp3",
+  "https://files.catbox.moe/omg4c1.mp3",
+  "https://files.catbox.moe/3oqb3y.mp3",
+  "https://files.catbox.moe/vyxcy3.mp3",
+  "https://files.catbox.moe/2teuwt.mp3",
+  "https://files.catbox.moe/xptny3.mp3",
+  "https://files.catbox.moe/cs1evq.mp3",
+  "https://files.catbox.moe/oorj8f.mp3",
+  "https://files.catbox.moe/s3xh41.mp3",
+  "https://files.catbox.moe/7mj95w.mp3",
+  "https://files.catbox.moe/c6mh8a.mp3",
+  "https://files.catbox.moe/z38s2x.mp3",
+  "https://files.catbox.moe/m0swul.mp3",
+  "https://files.catbox.moe/hok14l.mp3",
+  "https://files.catbox.moe/3gvw53.mp3",
+  "https://files.catbox.moe/o4z941.mp3",
+  "https://files.catbox.moe/32e1v5.mp3",
+  "https://files.catbox.moe/3s2m4o.mp3",
+  "https://files.catbox.moe/05ekok.mp3",
+  "https://files.catbox.moe/e0nho0.mp3",
+  "https://files.catbox.moe/dnqjhw.mp3",
+  "https://files.catbox.moe/fgnc0u.mp3",
+  "https://files.catbox.moe/ihe5xr.mp3",
+  "https://files.catbox.moe/wnbc4i.mp3",
+  "https://files.catbox.moe/8zf11g.mp3",
+  "https://files.catbox.moe/x0mji9.mp3",
+  "https://files.catbox.moe/qyw4ca.mp3",
+  "https://files.catbox.moe/q6b7hx.mp3",
+  "https://files.catbox.moe/paj02x.mp3"]
+            // Hàm để chọn một đường link nhạc ngẫu nhiên
+            function selectRandomMusic() {
+              const index = Math.floor(Math.random() * musicLinks.length);
+              return musicLinks[index];
+            }
+            // Lấy các phần tử DOM
+            const btnToggleMusic = document.getElementById('btnToggleMusic');
+            const myMusic = document.getElementById('myMusic');
+
+            // Thêm sự kiện nhấn vào nút bật/tắt nhạc
+            btnToggleMusic.addEventListener('click', function() {
+              if (myMusic.paused) {
+                // Chọn bài nhạc ngẫu nhiên và cập nhật nguồn cho thẻ audio
+                myMusic.src = selectRandomMusic();
+                myMusic.play(); // Bật nhạc
+                btnToggleMusic.textContent = '🔈 Tắt Nhạc'; // Đổi văn bản nút khi nhạc đang phát
+              } else {
+                myMusic.pause(); // Tắt nhạc
+                btnToggleMusic.textContent = '🔊 Bật Nhạc'; // Đổi văn bản nút khi nhạc đã tắt
+              }
+            });
+              </script>
+        </div>
+      </body>
+
+      </html>
